@@ -31,3 +31,55 @@ This project does the opposite:
 The goal is to **understand why Double Q-learning exists and how it fixes Q-learning**, from first principles.
 
 ---
+
+
+Problem:
+- the same Q-values choose and evaluate the greedy action
+- noise + max → overestimation
+
+Double Q-learning fix:
+- maintain **two estimators**: `Q₁` and `Q₂`
+- one selects the action
+- the other evaluates it
+
+This breaks the positive feedback loop caused by the max operator.
+
+---
+
+## Algorithm (high level)
+
+At each step:
+
+1. Select action using ε-greedy policy over `Q₁ + Q₂`
+2. Execute action → observe `(s, a, r, s')`
+3. With 50% probability:
+   - update `Q₁` using `argmax` from `Q₁` but value from `Q₂`
+4. Otherwise:
+   - update `Q₂` using `argmax` from `Q₂` but value from `Q₁`
+
+Both tables converge toward unbiased value estimates.
+
+---
+
+### Key design choices
+
+- **Two explicit Q-tables** (`Q1`, `Q2`)
+- **Randomized update selection** (coin flip)
+- **Policy independent of value updates**
+- **No hidden abstractions**
+- **Clear temporal flow**: `(s, a, r, s')`
+
+---
+
+## What this implementation emphasizes
+
+- Why overestimation happens in Q-learning
+- How Double Q-learning fixes it
+- Correct separation of:
+  - behavior policy
+  - action selection
+  - action evaluation
+- Clean modular code suitable for extension
+
+---
+
