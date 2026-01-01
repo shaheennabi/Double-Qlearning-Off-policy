@@ -1,0 +1,3 @@
+EPSILON = 0.1
+GAMMA = 0.99
+ALPHA = 0.1
